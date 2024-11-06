@@ -1,22 +1,15 @@
 <?php
-// Revive Adserver XML-RPC endpoint
-$serverUrl = "https://adserver.masjidapps.net/revive-adserver/www/api/v2/xmlrpc/";
-
-// Replace with your Revive Adserver admin credentials
-$username = 'revive_adserver_admin';
-$password = 'test5454webPassword';
+require_once 'constants.php';
+setup_constants();
 
 // Function to make XML-RPC calls using cURL
-function xmlRpcRequest($method, $params)
-{
-    global $serverUrl;
-
+function xmlRpcRequest($method, $params){
     // Prepare XML-RPC payload
     $request = xmlrpc_encode_request($method, $params);
 
     // Initialize cURL
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $serverUrl);
+    curl_setopt($ch, CURLOPT_URL, SERVER_URL);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -33,7 +26,7 @@ function xmlRpcRequest($method, $params)
 }
 
 // Step 1: Log in to get a session ID
-$sessionId = xmlRpcRequest('ox.logon', [$username, $password]);
+$sessionId = xmlRpcRequest('ox.logon', [USERNAME, PASSWORD]);
 
 if ($sessionId) {
     echo "Logged in successfully. Session ID: " . $sessionId . PHP_EOL;
